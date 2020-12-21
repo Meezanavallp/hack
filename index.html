@@ -1,0 +1,112 @@
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Text To Speech</title>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <style>
+      div {
+        margin-left: 17%;
+        margin-right: 17%;
+        margin-top: 12%;
+      }
+      #head1{
+        margin: 17px 0px;
+        color: rgb(138, 4, 4);
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div>
+      <h1>Indoor navigation for Blinds</h1>
+      <h1 id="ref"></h1>
+      <h2 id="head1"></h2>
+      <a href="#" id="ref" class="say" style="font-size:x-large;"
+        >Start Navigating</a
+      >
+      <br />
+
+      <audio src="" class="speech" hidden controls autoplay></audio>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyAQOqs1Yc7QtTixf_PnwlIXgq3LV71-hds",
+        authDomain: "chargeup-5cc76.firebaseapp.com",
+        databaseURL: "https://chargeup-5cc76.firebaseio.com",
+        projectId: "chargeup-5cc76",
+        storageBucket: "",
+        messagingSenderId: "481934283909",
+        appId: "1:481934283909:web:a449530f60d78cebe8c5ec",
+        measurementId: "G-1HNP84NSQV"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      $(function() {
+        $("a.say").on("click", function(e) {
+          e.preventDefault();
+          var text = $('input[name="Text"]').val();
+          var d4 = "";
+          //var signal = "2";
+          //console.log(signal);
+          var idk4 = firebase
+            .database()
+            .ref()
+            .child("nono");
+          idk4.on("value", function(snapshot) {
+            d4 = snapshot.val();
+
+            //console.log(d4);
+            if (d4 == 65) {
+              text = "You are in room 1";
+              console.log(text);
+            }else if (d4 == 66) {
+              text = "You are in room 2 turn right for room 3 turn left for room 1 and go straight for room 4";
+              console.log(text);
+            }else if (d4 == 67) {
+              text = "You are in room 3 turn right for room 4 turn left for room 2 and go straight for room 1";
+              console.log(text);
+            }else if (d4 == 68) {
+              text = "You are in room 4 turn left for room 3 turn right for room 1 and go straight for room 2";
+              console.log(text);
+            }else{
+            text = "";
+            }
+
+            document.getElementById("head1").innerHTML = text;
+            function myFunction() {
+              var x = document.getElementById("text").value;
+
+              var firebaseRef = firebase.database().ref();
+
+              firebaseRef.child("nono").set(x);
+            }
+
+           var url = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q="+text;
+
+            // var url =
+            //   "http://translate.google.com/translate_tts?tl=en&q=" +
+            //   text +
+            //   "&client=tw-ob";
+            $("audio")
+              .attr("src", url)
+              .get(0)
+              .play();
+
+            var t = "You are in room " + (d4-64) + "";
+            document.getElementById("ref").innerHTML = t;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
